@@ -1,0 +1,20 @@
+Bootstrap: library
+From: ubuntu:22.04
+
+%post
+	
+	apt-get update
+
+%files
+    requirements.txt /mnt/
+    ascii_image_converter.py /app/
+
+%environment
+    export PYTHONPATH=/app
+
+# Executed at build time
+%startscript
+
+# Executed when running the container
+%runscript
+    exec python /app/ascii_image_converter.py --file "$@" --cols 200
