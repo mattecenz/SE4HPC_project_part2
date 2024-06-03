@@ -10,7 +10,7 @@ From: ubuntu:22.04
 	apt install libopenmpi3 -y
 
 	cd /project/
-	mkdir build/
+	rm -rf build/*
 	cd build/
 	cmake ..
 	make
