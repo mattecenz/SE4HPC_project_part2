@@ -16,6 +16,10 @@ jobs:
         run: |
           git pull --recurse-submodules
           git submodule update --remote --recursive
+
+      - name: Setup MPI
+        uses: mpi4py/setup-mpi@v1
+
       - name: CMake setup
         uses: jwlawson/actions-setup-cmake@v1
 
@@ -25,13 +29,10 @@ jobs:
       - name: Build
         run: cmake --build build
 
-      #- name: Run tests
-      #  run: ./error_tracker.sh
-      
       - name: Install Singularity dependencies
         run: | 
           apt-get update
-          apt-get install -y  autoconf automake cryptsetup fuse fuse2fs git libfuse-dev libglib2.0-dev libseccomp-dev libtool pkg-config runc squashfs-tools squashfs-tools-ng uidmap wget zlib1g-dev
+          apt-get install -y autoconf automake cryptsetup fuse fuse2fs git libfuse-dev libglib2.0-dev libseccomp-dev libtool pkg-config runc squashfs-tools squashfs-tools-ng uidmap wget zlib1g-dev
           wget https://go.dev/dl/go1.22.3.linux-amd64.tar.gz
           rm -rf /usr/local/go && tar -C /usr/local -xzf go1.22.3.linux-amd64.tar.gz
           export PATH=$PATH:/usr/local/go/bin
