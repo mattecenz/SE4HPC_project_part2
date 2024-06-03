@@ -32,11 +32,17 @@ jobs:
       - name: Test implementation on github runner
         run: ctest --test-dir build
 
-      - name: Install Singularity dependencies
+      - name: Install Singularity
         run: | 
-          sudo apt-get update
-          sudo apt-get install -y autoconf automake cryptsetup fuse fuse2fs git libfuse-dev libglib2.0-dev libseccomp-dev libtool pkg-config runc squashfs-tools squashfs-tools-ng uidmap wget zlib1g-dev
-          wget https://go.dev/dl/go1.22.3.linux-amd64.tar.gz
-          sudo rm -rf /usr/local/go 
-          sudo tar -C /usr/local -xzf go1.22.3.linux-amd64.tar.gz
-          export PATH=$PATH:/usr/local/go/bin
+          # try to install singularity from a release
+          export VERSION=4.1.0
+          wget https://github.com/sylabs/singularity/releases/download/v${VERSION}/singularity-ce-${VERSION}.tar.gz
+          tar -xzf singularity-ce-${VERSION}.tar.gz
+          cd singularity-ce-${VERSION}
+
+          # sudo apt-get update
+          # sudo apt-get install -y autoconf automake cryptsetup fuse fuse2fs git libfuse-dev libglib2.0-dev libseccomp-dev libtool pkg-config runc squashfs-tools squashfs-tools-ng uidmap wget zlib1g-dev
+          # wget https://go.dev/dl/go1.22.3.linux-amd64.tar.gz
+          # sudo rm -rf /usr/local/go 
+          # sudo tar -C /usr/local -xzf go1.22.3.linux-amd64.tar.gz
+          # export PATH=$PATH:/usr/local/go/bin
