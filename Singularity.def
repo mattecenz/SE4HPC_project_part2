@@ -9,18 +9,16 @@ From: ubuntu:22.04
 	apt install mpich -y
 	apt install libopenmpi3 -y
 
-%files
-    	* /project/
-
-%environment
-
-# Executed at build time
-%startscript
 	cd /project/
 	mkdir build/
 	cd build/
 	cmake ..
 	make
+
+%files
+    	* /project/
+
+%environment
 
 # Executed when running the container
 %runscript
