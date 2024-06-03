@@ -4,17 +4,22 @@ From: ubuntu:22.04
 %post
 	
 	apt-get update
+	apt-get install cmake
 
 %files
-    requirements.txt /mnt/
-    ascii_image_converter.py /app/
+    	* /project/
 
 %environment
-    export PYTHONPATH=/app
 
 # Executed at build time
 %startscript
+	cd /project/
+	mkdir build/
+	cd build/
+	cmake ..
+	make
 
 # Executed when running the container
 %runscript
-    exec python /app/ascii_image_converter.py --file "$@" --cols 200
+	cd /project/build/
+	exec mpirun -n 2 ./main
