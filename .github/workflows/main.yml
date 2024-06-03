@@ -47,3 +47,7 @@ jobs:
 
           git clone --recurse-submodules https://github.com/sylabs/singularity.git
           cd singularity && git checkout --recurse-submodules v4.1.0 && ./mconfig && make -C ./builddir && sudo make -C ./builddir install
+
+      - name: Build singularity image
+        run: |
+          sudo singularity build main.sif Singularity.def
