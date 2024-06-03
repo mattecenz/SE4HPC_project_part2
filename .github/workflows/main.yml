@@ -45,9 +45,14 @@ jobs:
           echo 'export PATH=/usr/local/go/bin:${PATH}:${GOPATH}/bin' >> ~/.bashrc
           source ~/.bashrc
 
-          git clone --recurse-submodules https://github.com/sylabs/singularity.git
-          cd singularity && git checkout --recurse-submodules v4.1.0 && ./mconfig && make -C ./builddir && sudo make -C ./builddir install
+          export VERSION=4.1.3 # adjust this as necessary
+          wget https://github.com/sylabs/singularity/releases/download/v${VERSION}/singularity-ce-${VERSION}.tar.gz
+          tar -xzf singularity-ce-${VERSION}.tar.gz
+          cd singularity-ce-${VERSION} && ./mconfig && make -C builddir && sudo make -C builddir/ install
 
+          echo 'export PATH=${PATH}:/usr/local/etc/bash_completion.d' >> ~/.bashrc
+          source ~/.bashrc
+          
       - name: Build singularity image
         run: |
           sudo singularity build main.sif Singularity.def
