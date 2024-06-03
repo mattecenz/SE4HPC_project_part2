@@ -4,7 +4,10 @@ From: ubuntu:22.04
 %post
 	
 	apt-get update
-	apt-get install cmake
+	apt-get --assume-yes install cmake
+	apt update && apt upgrade -y
+	apt install mpich -y
+	apt install libopenmpi3 -y
 
 %files
     	* /project/
