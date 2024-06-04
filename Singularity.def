@@ -2,13 +2,14 @@ Bootstrap: library
 From: ubuntu:22.04
 
 %post
-	
-	apt-get update
-	apt-get --assume-yes install cmake
-	apt update && apt upgrade -y
-	apt install mpich -y
-	apt install libopenmpi3 -y
+	apt update && apt install -y \
+		cmake \
+		mpich \
+		openmpi-bin \
+		openmpi-common \
+		libopenmpi-dev \
 
+	# build the application
 	cd /project/
 	rm -rf build/*
 	cd build/
