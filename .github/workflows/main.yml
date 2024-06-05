@@ -47,6 +47,6 @@ jobs:
         env:
           super_secret: $ {{ secrets.SUPER_SECRET_PLEASE_DO_NOT_TRY_TO_LOOK }}
         run: |
-          sshpass -p$super_secret scp main.sif job.sh a08trb68@login.g100.cineca.it:~
-          sshpass -p$super_secret ssh a08trb68@login.g100.cineca.it sbatch job.sh 
-          sshpass -p$super_secret scp a08trb68@login.g100.cineca.it:matmul.out .
+          sshpass -p $super_secret scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null job.sh main.sif matrixA.txt matrixB.txt a08trb68@login.g100.cineca.it:.
+          # sshpass -p$super_secret ssh a08trb68@login.g100.cineca.it sbatch job.sh 
+          # sshpass -p$super_secret scp a08trb68@login.g100.cineca.it:matmul.out .
