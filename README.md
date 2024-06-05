@@ -52,3 +52,32 @@ properly! You do not want to leave passwords and authentication tokens
 visible to everybody, so you will use the [secrets
 mechanism](https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions?tool=cli).
 
+
+# Short pipeline explanation and design decisions
+The github pipeline builds the matrix multiplication application in a singularity container.
+
+## Singularity
+The `singularity` program can be compiled from source or installed via a .deb package. Whe chose the package solution to improve pipeline latency, but this solution could have maintenance problems in the future because we hardcoded the package version to the particular Ubuntu version of the runner. This solution could work if the singularity package were availabe in the apt repositories (and working).
+
+## Upload files to the cluster
+We used `sshpass` program to access ssh services without user interaction and provided the password with github secrets.
+We decided to add also the username as a secret (but the username could be visible in previous commits). Some attention was necessary to pass the cluster controls in particular the options:
+ * StrictHostKeyChecking=no
+ * UserKnownHostsFile=/dev/null
+
+## Launching the job on the cluster
+With `ssh` the runner launches the compiled program on the cluster. We had trouble in making MPI working correctly, here is our trials:
+ * (first implementation, wrong): `srun singularity run` + `mpirun -n 2 ./main` in the container
+ * (more correct implementation): `mpirun -n 2 singularity exec ..`
+
+The key point here is give to slurm the information of how many process our application needs and make the two MPI instances (for host and container) work together. In fact we had to bind temporary directories.
+
+Another important point is that in this way the program reads the host filesystem, and we had trouble finding the matrix files which were present in the container image but not in the root folder from which the program was called.
+
+A discussion with the tutor pointed that containers are used for managing the program build, but not always for storing the working files and it's a common practice to leave the input files outside the image.
+
+We introduced a sleep in the runner script to wait for the job to complete before copying back the results. It's a duct tape solution, I'm sure there exists better ones.
+
+
+## Dealing with the results of the computation
+In previous versions of the repository (65aa48b) we made the action commit the resulting files into the repository. It was a nice solution but suffered from this simple problem: if the resulting files were already equal to the files in the worktree we couldn't commit no changes. In the end we chose the upload artifact action.
