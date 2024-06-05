@@ -16,7 +16,6 @@ jobs:
         run: |
           git pull --recurse-submodules
           git submodule update --remote --recursive
-
       - name: Setup MPI
         uses: mpi4py/setup-mpi@v1
 
@@ -36,16 +35,20 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y autoconf automake cryptsetup fuse fuse2fs git libfuse-dev libglib2.0-dev libseccomp-dev libtool pkg-config runc squashfs-tools squashfs-tools-ng uidmap wget zlib1g-dev 
-
           wget https://github.com/sylabs/singularity/releases/download/v4.1.3/singularity-ce_4.1.3-focal_amd64.deb
           sudo dpkg -i singularity-ce_4.1.3-focal_amd64.deb
-
       - name: Build singularity image
         run: sudo singularity build main.sif Singularity.def
 
       - name: Copy singularity image and run on the Galileo cluster using the secret
         env:
-          super_secret: $ {{ secrets.SUPER_SECRET_PLEASE_DO_NOT_TRY_TO_LOOK }}
+          super_secret: ${{ secrets.SUPER_SECRET_PLEASE_DO_NOT_TRY_TO_LOOK }}
         run: |
-          sshpass -p$super_secret scp main.sif job.sh a08trb68@login.g100.cineca.it:~
-          sshpass -p $super_secret ssh a08trb68@login.g100.cineca.it sbatch job.sh 
+          sshpass -p "$super_secret" -v scp -o StrictHostKeyChecking=no main.sif job.sh a08trb68@login.g100.cineca.it:~
+          ssh-keygen -f "/home/runner/.ssh/known_hosts" -R "login.g100.cineca.it"
+          sshpass -p "$super_secret" -v ssh -o StrictHostKeyChecking=no a08trb68@login.g100.cineca.it sbatch job.sh
+          sleep 10s
+          touch result.out
+          ssh-keygen -f "/home/runner/.ssh/known_hosts" -R "login.g100.cineca.it"
+          sshpass -p "$super_secret" -v scp -o StrictHostKeyChecking=no a08trb68@login.g100.cineca.it:~/matmul.out result.out
+          cat result.out
