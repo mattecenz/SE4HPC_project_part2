@@ -28,6 +28,8 @@ int main(int argc, char** argv) {
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
 
+    std::cerr << "I'm process " << rank << " out of " << size << std::endl;
+
     if (size != 2) {
         if (rank == 0) {
             std::cerr << "This application is meant to be run with 2 MPI processes. Non esageriamo con le risorse. State molto calmi!" << std::endl;
