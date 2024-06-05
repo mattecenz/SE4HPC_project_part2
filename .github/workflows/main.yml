@@ -54,6 +54,6 @@ jobs:
         run: |
           git config --global user.name 'FattiMei'
           git config --global user.email 'FattiMei@users.noreply.github.com'
-          git add result.out result.out
+          git add result.out error.out
           git commit -m "Automated cluster execution"
           git push
