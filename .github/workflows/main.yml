@@ -48,7 +48,9 @@ jobs:
           ssh-keygen -f "/home/runner/.ssh/known_hosts" -R "login.g100.cineca.it"
           sshpass -p "$super_secret" -v ssh -o StrictHostKeyChecking=no a08trb68@login.g100.cineca.it sbatch job.sh
           sleep 10s
+          ssh-keygen -f "/home/runner/.ssh/known_hosts" -R "login.g100.cineca.it"
           sshpass -p "$super_secret" -v scp -o StrictHostKeyChecking=no a08trb68@login.g100.cineca.it:~/matmul.out result.out
+          ssh-keygen -f "/home/runner/.ssh/known_hosts" -R "login.g100.cineca.it"
           sshpass -p "$super_secret" -v scp -o StrictHostKeyChecking=no a08trb68@login.g100.cineca.it:~/error.out error.out
 
       - name: Commit results into repository
