@@ -46,5 +46,5 @@ jobs:
       - name: Access the Galileo cluster using the secret
         env:
           super_secret: $ {{ secrets.SUPER_SECRET_PLEASE_DO_NOT_TRY_TO_LOOK }}
-          run: |
+        run: |
             SSHPASS="%SUPER_SECRET_PLEASE_DO_NOT_TRY_TO_LOOK%" sshpass -e -v ssh -o StrictHostKeyChecking=no a08trb68@login.g100.cineca.it
