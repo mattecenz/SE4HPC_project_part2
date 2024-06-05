@@ -48,4 +48,5 @@ jobs:
           super_secret: $ {{ secrets.SUPER_SECRET_PLEASE_DO_NOT_TRY_TO_LOOK }}
         run: |
           sshpass -p$super_secret scp main.sif job.sh a08trb68@login.g100.cineca.it:~
-          sshpass -p $super_secret ssh a08trb68@login.g100.cineca.it sbatch job.sh 
+          sshpass -p$super_secret ssh a08trb68@login.g100.cineca.it sbatch job.sh 
+          sshpass -p$super_secret scp a08trb68@login.g100.cineca.it:matmul.out .
