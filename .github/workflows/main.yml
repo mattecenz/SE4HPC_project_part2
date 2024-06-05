@@ -43,9 +43,10 @@ jobs:
       - name: Build singularity image
         run: sudo singularity build main.sif Singularity.def
 
-      - name: Access the Galileo cluster using the secret
+      - name: Copy singularity image and run on the Galileo cluster using the secret
         env:
           super_secret: $ {{ secrets.SUPER_SECRET_PLEASE_DO_NOT_TRY_TO_LOOK }}
         run: |
-          sudo apt install -y sshpass  
-          SSHPASS="%SUPER_SECRET_PLEASE_DO_NOT_TRY_TO_LOOK%" sshpass -e -v ssh -o StrictHostKeyChecking=no a08trb68@login.g100.cineca.it
+          sudo apt install -y sshpass
+          sshpass -p"$super_secret" scp main.sif job.sh a08trb68@login.g100.cineca.it:~
+          sshpass -p"$super_secret" ssh a08trb68@login.g100.cineca.it sbatch job.sh 
