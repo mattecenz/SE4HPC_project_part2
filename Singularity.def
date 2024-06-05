@@ -18,10 +18,3 @@ From: ubuntu:22.04
 
 %files
     	* /project/
-
-%environment
-
-# Executed when running the container
-%runscript
-	cd /project/build/
-	exec mpirun -n 2 ./main

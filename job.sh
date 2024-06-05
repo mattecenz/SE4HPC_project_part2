@@ -8,4 +8,11 @@
 #SBATCH --mem-per-cpu=100M
 
 
-singularity run --bind "$TMPDIR" ./main.sif
+module load singularity
+
+SINGULARITY_IMAGE=main.sif
+
+export TMPDIR=$HOME/tmp
+mkdir -p $TMPDIR
+
+singularity exec --bind $TMPDIR:$TMPDIR $SINGULARITY_IMAGE bash -c "export OMPI_MCA_tmpdir_base=$TMPDIR && mpirun -np 2 /project/build/main"
