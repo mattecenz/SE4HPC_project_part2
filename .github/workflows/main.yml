@@ -50,10 +50,14 @@ jobs:
           sshpass -p "$super_secret" -v scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null a08trb68@login.g100.cineca.it:~/matmul.out result.out
           sshpass -p "$super_secret" -v scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null a08trb68@login.g100.cineca.it:~/error.out error.out
 
-      - name: Commit results into repository
-        run: |
-          git config --global user.name 'FattiMei'
-          git config --global user.email 'FattiMei@users.noreply.github.com'
-          git add result.out error.out
-          git commit -m "Automated cluster execution"
-          git push
+      - name: Upload matmul results
+        uses: actions/upload-artifact@v4.3.3
+        with:
+          name: result
+          path: result.out
+
+      - name: Upload Error log
+        uses: actions/upload-artifact@v4.3.3
+        with:
+          name: error
+          path: error.out
