@@ -42,7 +42,7 @@ jobs:
 
       - name: Copy singularity image and run on the Galileo cluster using the secrets
         env:
-          ssh_usr: ${{ secrets.SUPER_SECRET_USER }}
+          ssh_usr: ${{ secrets.SUPER_SECRET_USERNAME }}
           ssh_pwd: ${{ secrets.SUPER_SECRET_PLEASE_DO_NOT_TRY_TO_LOOK }}
         run: |
           sshpass -p "$ssh_pwd" -v scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null main.sif job.sh matrixA.txt matrixB.txt $ssh_usr@login.g100.cineca.it:~
