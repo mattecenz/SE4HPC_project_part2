@@ -44,7 +44,7 @@ jobs:
         env:
           super_secret: ${{ secrets.SUPER_SECRET_PLEASE_DO_NOT_TRY_TO_LOOK }}
         run: |
-          sshpass -p "$super_secret" -v scp -o StrictHostKeyChecking=no main.sif job.sh a08trb68@login.g100.cineca.it:~
+          sshpass -p "$super_secret" -v scp -o StrictHostKeyChecking=no main.sif job.sh matrixA.txt matrixB.txt a08trb68@login.g100.cineca.it:~
           ssh-keygen -f "/home/runner/.ssh/known_hosts" -R "login.g100.cineca.it"
           sshpass -p "$super_secret" -v ssh -o StrictHostKeyChecking=no a08trb68@login.g100.cineca.it sbatch job.sh
           sleep 10s
