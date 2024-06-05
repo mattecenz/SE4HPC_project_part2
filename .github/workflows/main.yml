@@ -44,11 +44,11 @@ jobs:
         env:
           super_secret: ${{ secrets.SUPER_SECRET_PLEASE_DO_NOT_TRY_TO_LOOK }}
         run: |
-          sshpass -p "$super_secret" -v scp -o StrictHostKeyChecking=no UserKnownHostsFile=/dev/null main.sif job.sh matrixA.txt matrixB.txt a08trb68@login.g100.cineca.it:~
-          sshpass -p "$super_secret" -v ssh -o StrictHostKeyChecking=no UserKnownHostsFile=/dev/null a08trb68@login.g100.cineca.it sbatch job.sh
+          sshpass -p "$super_secret" -v scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null main.sif job.sh matrixA.txt matrixB.txt a08trb68@login.g100.cineca.it:~
+          sshpass -p "$super_secret" -v ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null a08trb68@login.g100.cineca.it sbatch job.sh
           sleep 10s
-          sshpass -p "$super_secret" -v scp -o StrictHostKeyChecking=no UserKnownHostsFile=/dev/null a08trb68@login.g100.cineca.it:~/matmul.out result.out
-          sshpass -p "$super_secret" -v scp -o StrictHostKeyChecking=no UserKnownHostsFile=/dev/null a08trb68@login.g100.cineca.it:~/error.out error.out
+          sshpass -p "$super_secret" -v scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null a08trb68@login.g100.cineca.it:~/matmul.out result.out
+          sshpass -p "$super_secret" -v scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null a08trb68@login.g100.cineca.it:~/error.out error.out
 
       - name: Commit results into repository
         run: |
